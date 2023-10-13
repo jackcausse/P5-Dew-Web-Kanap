@@ -1,15 +1,17 @@
-// déclaration de la variable "addProductLocalStorage" dans laquelle on met les key et les value qui sont dans le local storage
-let products = []
-cart = localStorage.getItem('products')
+// déclaration de la variable "cart" dans laquelle on met
+//  les keys et les values qui sont dans le local storage
 
+cart = localStorage.getItem('products')
+let products = []
 // On affiche les produits du panier
 if (cart === null) {
-  products = []
+ 
 
   alert('Votre panier est vide')
   console.log('localStorage vide')
 } else {
-  //JSON.parse prend une chaine de caractère et la transforme en objet ou tableau ou données complexes
+  // JSON.parse prend une chaine de caractère et la transforme
+  // en objet ou tableau ou données complexes
   cart = JSON.parse(cart)
 
   const cartItems = document.getElementById('cart__items')
@@ -23,26 +25,17 @@ if (cart === null) {
     })
   function showData(data) {
     cart.forEach((productInCart) => {
-      // console.log(productInCart)
       // On crée un élément article
       const article = document.createElement('article')
       article.className = 'cart__item'
       article.dataset.id = productInCart.id
       article.dataset.color = productInCart.color
-      // document.querySelector('#cart__items').appendChild(article)
-      //  document.querySelector(
-      //  '#cart__items'
-      //  )
-      // article.innerHTML = `<article class="cart__item" data-id="${data.id}" data-color="${data.color}">`
-      // article.setAttribute = ('data-id', productInCart.id)
-      //  article.setAttribute = ('data-color', productInCart.color)
       cartItems.appendChild(article)
 
       //   On crée la div img
       const divImg = document.createElement('div')
       divImg.classList.add('cart__item__img')
       article.appendChild(divImg)
-      // console.log(divImg)
 
       //  On crée un élément Image
       const image = document.createElement('img')
@@ -94,7 +87,6 @@ if (cart === null) {
 
       // On crée un élément p
       const price = document.createElement('p')
-      // price.innerText = data.price + '€'
       divContentDescription.appendChild(price)
       let priceInnerText
       data.map((p) => {
@@ -141,8 +133,8 @@ if (cart === null) {
       buttonDelete.innerText = 'Supprimer'
       divSettingsDelete.appendChild(buttonDelete)
 
-      // ...........................................
-      // ...........................................
+      // .............................................................................
+      // .............................................................................
 
       // On crée la constante product
       const product = {
@@ -161,17 +153,17 @@ if (cart === null) {
 
       //....Fonction qui calcule la quantité et le prix des produits du panier........
       //..............................................................................
+
       async function totalPriceQuantity() {
         let totalPrice = 0
         let totalQty = 0
 
         if (cart.length != 0) {
           for (let j = 0; j < cart.length; j++) {
-            let productInCart = cart[j]
-            //  const product = await (product.id);
-            totalPrice +=
-              parseInt(productInCart.quantity) * parseInt(product.price)
-            totalQty += parseInt(productInCart.quantity)
+            let item = cart[j]
+
+            totalPrice += parseInt(item.quantity) * parseInt(product.price)
+            totalQty += parseInt(item.quantity)
           }
         }
 
@@ -181,7 +173,12 @@ if (cart === null) {
         const finalPrice = document.getElementById('totalPrice')
         finalPrice.innerHTML = totalPrice
       }
+      // fin de la fonction, totalPriceQuantity()
+
       totalPriceQuantity()
+      //..............................................................................
+      //..............................................................................
+
       //....Fonction qui modifie la quantité..........................................
       //..............................................................................
 
@@ -250,11 +247,11 @@ if (cart === null) {
     })
   }
 }
-//....Fin du else si des produits sont dans le panier.........................
-// .............................................................................
+//....Fin du else si des produits sont dans le panier.................................
+// ...................................................................................
 
-//....Fonction de validation du formulaire......................................
-//..............................................................................
+//....Fonction de validation du formulaire............................................
+//....................................................................................
 
 //On envoi le formulaire dans le serveur
 function postForm() {
@@ -274,7 +271,6 @@ function postForm() {
     // On crée des variables de test
     const communeRegex = /^[a-zA-ZéèêëàâäôöîïùûüçÉÈÊËÀÂÄÔÖÎÏÙÛÜÇ\s-]+$/
     const addressRegex = /^[a-zA-Z0-9\s,.'-]{3,}$/
-    ///^\w+([.-]?\w+)@\w+([.-]?\w+).(.\w{2,3})+$/
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/
 
     // On contrôle la validation des entrées de contact
@@ -286,7 +282,7 @@ function postForm() {
         return true
       } else {
         let firstNameErrorMsg = document.getElementById('firstNameErrorMsg')
-        alert((firstNameErrorMsg.innerText = 'Prénom. Erreur'))
+        alert((firstNameErrorMsg = 'Prénom. Erreur'))
       }
     }
 
@@ -297,7 +293,7 @@ function postForm() {
         return true
       } else {
         let lastNameErrorMsg = document.getElementById('lastNameErrorMsg')
-        alert((lastNameErrorMsg.innerText = 'Nom. Erreur'))
+        alert((lastNameErrorMsg = 'Nom. Erreur'))
       }
     }
 
@@ -308,7 +304,7 @@ function postForm() {
         return true
       } else {
         let addressErrorMsg = document.getElementById('addressErrorMsg')
-        alert((addressErrorMsg.innerText = 'Adresse. Erreur '))
+        alert((addressErrorMsg = 'Adresse. Erreur '))
       }
     }
 
@@ -319,7 +315,7 @@ function postForm() {
         return true
       } else {
         let cityErrorMsg = document.getElementById('cityErrorMsg')
-        alert((cityErrorMsg.innerText = 'Ville. Erreur'))
+        alert((cityErrorMsg = 'Ville. Erreur'))
       }
     }
 
@@ -329,8 +325,8 @@ function postForm() {
       if (emailRegex.test(okEmail)) {
         return true
       } else {
-        let emailErrorMsg = document.getElementById('emailErrorMsg')
-        alert((emailErrorMsg.innerText = 'Email. Erreur'))
+        let = emailErrorMsg = document.getElementById('emailErrorMsg')
+        alert((emailErrorMsg = 'Email. Erreur'))
       }
     }
 
@@ -350,7 +346,7 @@ function postForm() {
         alert('Merci de vérifier les données du formulaire')
       }
     }
-    // okControl()
+
 
     // On crée un tableau avec les id des produits de la commande
     let products = []
@@ -390,9 +386,9 @@ function postForm() {
           document.location.href = 'confirmation.html?id=' + data.orderId
         }
       })
-  }) // fin de l' eventListener postForm
-} // fin de la function postForm()
+  }) 
+}
+// fin de la fonction postForm()
 postForm()
-
 // ...................................................................................
 // ...................................................................................
