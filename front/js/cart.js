@@ -1,12 +1,11 @@
 // déclaration de la variable "cart" dans laquelle on met
 //  les keys et les values qui sont dans le local storage
-
+// let products = []
 cart = localStorage.getItem('products')
-let products = []
+ 
 // On affiche les produits du panier
 if (cart === null) {
- 
-
+cart = []
   alert('Votre panier est vide')
   console.log('localStorage vide')
 } else {
@@ -21,11 +20,12 @@ if (cart === null) {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      showData(data)
+      let products =  showData(data)
+      console.log(products)
     })
   function showData(data) {
+    let tab = []
     cart.forEach((productInCart) => {
-      // On crée un élément article
       const article = document.createElement('article')
       article.className = 'cart__item'
       article.dataset.id = productInCart.id
@@ -68,17 +68,17 @@ if (cart === null) {
       divContent.appendChild(divContentDescription)
 
       // On crée un élément h2
-      const h2Name = document.createElement('h2')
-      divContentDescription.appendChild(h2Name)
-      h2Name.innerText = data.name
+      const name = document.createElement('h2')
+      divContentDescription.appendChild(name)
+      name.innerText = data.name
 
-      let h2NameInnerText
+      let nameInnerText
       data.map((p) => {
         if (p._id === productInCart.id) {
-          h2NameInnerText = p.name
+          nameInnerText = p.name
         }
       })
-      h2Name.innerText = h2NameInnerText
+      name.innerText = nameInnerText
 
       // On crée un élément p
       const color = document.createElement('p')
@@ -133,6 +133,15 @@ if (cart === null) {
       buttonDelete.innerText = 'Supprimer'
       divSettingsDelete.appendChild(buttonDelete)
 
+      //..............................................................................
+      //..............................................................................
+      // On appelle les fonctions
+      totalPriceQuantity()
+
+      changeQuantity()
+
+      deleteProducts()
+      
       // .............................................................................
       // .............................................................................
 
@@ -141,13 +150,38 @@ if (cart === null) {
         id: productInCart.id,
         color: productInCart.color,
         quantity: ('value', productInCart.quantity),
-        price: price.innerText,
-        name: h2NameInnerText,
+        price: priceInnerText,
+        name: nameInnerText,
         image: imageSrc,
         altText: imageAlt,
       }
+
+      function item() {
+      const product = {
+        id: productInCart.id,
+        color: productInCart.color,
+        quantity: ('value', productInCart.quantity),
+        price: priceInnerText,
+        name: nameInnerText,
+        image: imageSrc,
+        altText: imageAlt,
+      }
+     } 
+      // console.log(item)
       console.log(product)
       console.log(productInCart)
+      //..............................................................................
+      //..............................................................................
+      tab.push(product)
+      console.log(tab.push(product))
+    })
+    return tab
+  }
+  // Fin de la fonction, showData(data)
+}
+//....Fin du else si des produits sont dans le panier.................................
+// ...................................................................................
+
       //..............................................................................
       //..............................................................................
 
@@ -156,26 +190,24 @@ if (cart === null) {
 
       async function totalPriceQuantity() {
         let totalPrice = 0
-        let totalQty = 0
-
+        let totalQuantity = 0
+       
         if (cart.length != 0) {
           for (let j = 0; j < cart.length; j++) {
             let item = cart[j]
-
-            totalPrice += parseInt(item.quantity) * parseInt(product.price)
-            totalQty += parseInt(item.quantity)
-          }
+          
+            cart.forEach((item) => {
+              totalPrice +=
+                parseInt(item.quantity) * parseInt(item.priceInnerText)
+              totalQuantity += parseInt(item.quantity)
+            })}
         }
 
-        const finalQty = document.getElementById('totalQuantity')
-        finalQty.innerHTML = totalQty
-
-        const finalPrice = document.getElementById('totalPrice')
-        finalPrice.innerHTML = totalPrice
+        document.getElementById('totalQuantity').innerHTML = totalQuantity
+        document.getElementById('totalPrice').innerHTML = totalPrice
       }
       // fin de la fonction, totalPriceQuantity()
-
-      totalPriceQuantity()
+ 
       //..............................................................................
       //..............................................................................
 
@@ -183,30 +215,35 @@ if (cart === null) {
       //..............................................................................
 
       function changeQuantity() {
+        // On pointe le produit
         const changedQuantity = document.getElementsByClassName('itemQuantity')
-
+        // On fait une boucle pour modifier la quantité des produits
         for (let j = 0; j < changedQuantity.length; j++) {
+          
           changedQuantity[j].addEventListener('change', function (event) {
+            // On empêche l’action par défaut liée au clic sur le bouton
             event.preventDefault()
             // ParseInt permet de changer un nombre en string
+            // On met à jour la quantité
             cart[j].quantity = parseInt(event.target.value)
-
+            // On controle si la quantité est supérieure à 0 et inférieure à 100
             if (cart[j].quantity < 0 || cart[j].quantity > 100) {
               alert(
                 'Veuillez sélectionner une quantité comprise entre 1 et 100'
               )
               window.location.href = 'cart.html'
             } else {
+              // On envoie les nouvelles données dans le localStorage
               localStorage.setItem('products', JSON.stringify(cart))
+              // // On met le prix et la quantité à jour
               totalPriceQuantity()
+              
             }
           })
         }
       }
       // Fin de la fonction, changeQuantity()
-      // totalPriceQuantity()
-
-      changeQuantity()
+     
       //..............................................................................
       //..............................................................................
 
@@ -214,16 +251,27 @@ if (cart === null) {
       //..............................................................................
 
       function deleteProducts() {
+        // On pointe l'article
         const deleteItem = document.getElementsByClassName('deleteItem')
+        // On prend en compte le click sur l'article
         for (let d = 0; d < deleteItem.length; d++) {
+          // On prend en compte le click sur l'article
           deleteItem[d].addEventListener('click', (event) => {
             event.preventDefault()
+            // On récupère l'id de article
+            const productInCartId = event.target
+              .closest('article')
+              .getAttribute('data-id')
+            //  On récupère la couleur de l'article
+            const productInCartColor = event.target
+              .closest('article')
+              .getAttribute('data-color')
 
-            // On enregistre l'id et la couleur séléctionnée par le bouton "supprimer"
+            // On enregistre l'id et la couleur séléctionnée par le bouton "Supprimer"
             cart = cart.filter(
               (element) =>
-                element.id !== productInCart.id ||
-                element.color !== productInCart.color
+                element.id == productInCartId.id ||
+                element.color == productInCartColor.color
             )
 
             // On envoie les nouvelles données dans le localStorage
@@ -231,25 +279,19 @@ if (cart === null) {
 
             // On avertit de la suppression et on recharge la page
             alert('Votre article a bien été supprimé.')
-
+            // On recharge la page
             window.location.href = 'cart.html'
 
-            // On calcule le prix et la quantité
-            totalPriceQuantity()
+            // // On calcule le prix et la quantité
+            // totalPriceQuantity()
           })
         }
       }
       // Fin de la fonction, deleteProducts(products)
 
-      deleteProducts()
       // .............................................................................
       // .............................................................................
-    })
-  }
-}
-//....Fin du else si des produits sont dans le panier.................................
-// ...................................................................................
-
+     
 //....Fonction de validation du formulaire............................................
 //....................................................................................
 
@@ -272,7 +314,8 @@ function postForm() {
     const communeRegex = /^[a-zA-ZéèêëàâäôöîïùûüçÉÈÊËÀÂÄÔÖÎÏÙÛÜÇ\s-]+$/
     const addressRegex = /^[a-zA-Z0-9\s,.'-]{3,}$/
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/
-
+ 
+    
     // On contrôle la validation des entrées de contact
 
     //On contrôle le prénom
@@ -390,5 +433,6 @@ function postForm() {
 }
 // fin de la fonction postForm()
 postForm()
+
 // ...................................................................................
 // ...................................................................................
