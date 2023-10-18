@@ -1,28 +1,39 @@
 // déclaration de la variable "cart" dans laquelle on met
 //  les keys et les values qui sont dans le local storage
-// let products = []
-cart = localStorage.getItem('products')
- 
+let products = []
+//....Fonction qui récupère le local storage....................................
+//   function getCart() {
+//     return JSON.parse(localStorage.getItem('products'))
+//   }
+
+// let cart = localStorage.getItem('products')
+let cart = JSON.parse(localStorage.getItem('products'))
 // On affiche les produits du panier
 if (cart === null) {
-cart = []
+  let cart = []
   alert('Votre panier est vide')
   console.log('localStorage vide')
 } else {
   // JSON.parse prend une chaine de caractère et la transforme
   // en objet ou tableau ou données complexes
-  cart = JSON.parse(cart)
-
+  //  cart = JSON.parse(cart)
+  
   const cartItems = document.getElementById('cart__items')
 
-  // Afficher les produits du Local Storage sur la page Cart
+  // On affiche les produits du Local Storage sur la page Cart
   let url = 'http://localhost:3000/api/products/'
   fetch(url)
     .then((response) => response.json())
-    .then((data) => {
-      let products =  showData(data)
-      console.log(products)
+  .then((data) => {
+  console.log(data)
+  let products = showData(data)
+    console.log(products)
+    products.forEach((product, i) => {
+      totalPriceQuantity(product)
+      changeQuantity(product)
+      deleteProducts(product)
     })
+  })
   function showData(data) {
     let tab = []
     cart.forEach((productInCart) => {
@@ -43,7 +54,7 @@ cart = []
 
       let imageSrc
       data.map((p) => {
-        if (p._id == productInCart.id) {
+        if ((p._id = productInCart.id)) {
           imageSrc = p.imageUrl
         }
       })
@@ -135,13 +146,8 @@ cart = []
 
       //..............................................................................
       //..............................................................................
-      // On appelle les fonctions
-      totalPriceQuantity()
-
-      changeQuantity()
-
-      deleteProducts()
       
+
       // .............................................................................
       // .............................................................................
 
@@ -157,141 +163,199 @@ cart = []
       }
 
       function item() {
-      const product = {
-        id: productInCart.id,
-        color: productInCart.color,
-        quantity: ('value', productInCart.quantity),
-        price: priceInnerText,
-        name: nameInnerText,
-        image: imageSrc,
-        altText: imageAlt,
+        const product = {
+          id: productInCart.id,
+          color: productInCart.color,
+          quantity: ('value', productInCart.quantity),
+          price: priceInnerText,
+          name: nameInnerText,
+          image: imageSrc,
+          altText: imageAlt,
+        }
       }
-     } 
+
       // console.log(item)
       console.log(product)
       console.log(productInCart)
+    
       //..............................................................................
       //..............................................................................
       tab.push(product)
       console.log(tab.push(product))
     })
+  
     return tab
   }
   // Fin de la fonction, showData(data)
+
 }
 //....Fin du else si des produits sont dans le panier.................................
 // ...................................................................................
 
-      //..............................................................................
-      //..............................................................................
+//..............................................................................
+//..............................................................................
 
-      //....Fonction qui calcule la quantité et le prix des produits du panier........
-      //..............................................................................
+//....Fonction qui calcule la quantité et le prix des produits du panier........
+//..............................................................................
 
-      async function totalPriceQuantity() {
-        let totalPrice = 0
-        let totalQuantity = 0
-       
-        if (cart.length != 0) {
-          for (let j = 0; j < cart.length; j++) {
-            let item = cart[j]
-          
-            cart.forEach((item) => {
-              totalPrice +=
-                parseInt(item.quantity) * parseInt(item.priceInnerText)
-              totalQuantity += parseInt(item.quantity)
-            })}
-        }
 
-        document.getElementById('totalQuantity').innerHTML = totalQuantity
-        document.getElementById('totalPrice').innerHTML = totalPrice
-      }
-      // fin de la fonction, totalPriceQuantity()
- 
-      //..............................................................................
-      //..............................................................................
 
-      //....Fonction qui modifie la quantité..........................................
-      //..............................................................................
+// // On pointe les éléments
+// document.getElementById('totalPrice').innerText = totalPrice
+// document.getElementById('totalQuantity').innerText = totalQuantity
+// let itemQuantity = document.querySelectorAll('itemQuantity')
+// // On fait une boucle avec un addEvenListener pour cibler le prix et la quantité totale
+// for (let i = 0; i < itemQuantity.length; i++) {
+//   itemQuantity[i].addEventListener('change', totalPriceQuantity)
+// }
 
-      function changeQuantity() {
-        // On pointe le produit
-        const changedQuantity = document.getElementsByClassName('itemQuantity')
-        // On fait une boucle pour modifier la quantité des produits
-        for (let j = 0; j < changedQuantity.length; j++) {
-          
-          changedQuantity[j].addEventListener('change', function (event) {
-            // On empêche l’action par défaut liée au clic sur le bouton
-            event.preventDefault()
-            // ParseInt permet de changer un nombre en string
-            // On met à jour la quantité
-            cart[j].quantity = parseInt(event.target.value)
-            // On controle si la quantité est supérieure à 0 et inférieure à 100
-            if (cart[j].quantity < 0 || cart[j].quantity > 100) {
-              alert(
-                'Veuillez sélectionner une quantité comprise entre 1 et 100'
-              )
-              window.location.href = 'cart.html'
-            } else {
-              // On envoie les nouvelles données dans le localStorage
-              localStorage.setItem('products', JSON.stringify(cart))
-              // // On met le prix et la quantité à jour
-              totalPriceQuantity()
-              
-            }
-          })
-        }
-      }
-      // Fin de la fonction, changeQuantity()
+// function totalPriceQuantity(product) {
+//   // On cible l'élément qui affiche le prix
+//   const productInCart = document.querySelectorAll(
+//     '.cart__item__content__description :nth-child(3)'
+//   )
+//   // On cible l'élément qui affiche la quantité
+//   quantity = document.querySelectorAll('.itemQuantity')
+// // On déclare les variables avec des valeurs de nombre
+//   let quantity = 0
+//   let total = 0
+//   // On fait une boucle afin de trouver la quantité
+//   for (let i = 0; i < quantity.length; i++) {
+//     // On met en place un opérateur qui calcule les quantité
+//     quantity += parseInt(quantity[i].value)
+//     // On met en place un opérateur qui calcule le prix total
+//     total += parseInt(quantity[i].value) * parseInt(product[i].innerText)
+//   }
+//   totalQuantity.innerText = quantity
+//   totalPrice.innerText = total
+// }
+// Fin de la fonction,totalPriceQuantity()
+
+// totalPriceQuantity()
+
+
+async function totalPriceQuantity(product) {
+  
+  // On déclare les variables avec des valeurs de nombre
+  let totalQuantity = 0
+  let totalPrice = 0
+  // On fait une boucle afin de trouver la quantité
+  if (cart.length != 0) {
+    for (let j = 0; j < cart.length; j++) {
+      let item = cart[j]
+
+        // On met en place un opérateur qui calcule la quantité
+        totalQuantity += parseInt(item.quantity)
+        // On met en place un opérateur qui calcule le prix total
+        totalPrice += parseInt(item.quantity) * parseInt(product.price)
      
-      //..............................................................................
-      //..............................................................................
+    }
+  }
+  // On cible l'élément qui affiche la quantitée
+  document.getElementById('totalQuantity').innerHTML = totalQuantity
+  // On cible l'élément qui affiche le prix
+  document.getElementById('totalPrice').innerHTML = totalPrice
+}
+// // Fin de la fonction, totalPriceQuantity()
 
-      //....Fonction qui supprime un produit..........................................
-      //..............................................................................
+//..............................................................................
+//..............................................................................
 
-      function deleteProducts() {
-        // On pointe l'article
-        const deleteItem = document.getElementsByClassName('deleteItem')
-        // On prend en compte le click sur l'article
-        for (let d = 0; d < deleteItem.length; d++) {
-          // On prend en compte le click sur l'article
-          deleteItem[d].addEventListener('click', (event) => {
-            event.preventDefault()
-            // On récupère l'id de article
-            const productInCartId = event.target
-              .closest('article')
-              .getAttribute('data-id')
-            //  On récupère la couleur de l'article
-            const productInCartColor = event.target
-              .closest('article')
-              .getAttribute('data-color')
+//....Fonction qui modifie la quantité..........................................
+//..............................................................................
 
-            // On enregistre l'id et la couleur séléctionnée par le bouton "Supprimer"
-            cart = cart.filter(
-              (element) =>
-                element.id == productInCartId.id ||
-                element.color == productInCartColor.color
-            )
-
-            // On envoie les nouvelles données dans le localStorage
-            localStorage.setItem('products', JSON.stringify(cart))
-
-            // On avertit de la suppression et on recharge la page
-            alert('Votre article a bien été supprimé.')
-            // On recharge la page
-            window.location.href = 'cart.html'
-
-            // // On calcule le prix et la quantité
-            // totalPriceQuantity()
-          })
-        }
+function changeQuantity(product) {
+  // On pointe le produit
+  const changedQuantity = document.getElementsByClassName('itemQuantity')
+  // On fait une boucle pour modifier la quantité des produits
+  for (let j = 0; j < changedQuantity.length; j++) {
+    changedQuantity[j].addEventListener('change', function (event) {
+      // On empêche l’action par défaut liée au clic sur le bouton
+      event.preventDefault()
+      // ParseInt permet de changer un nombre en string
+      // On met à jour la quantité
+      cart[j].quantity = parseInt(event.target.value)
+      // On controle si la quantité est supérieure à 0 et inférieure à 100
+      if (cart[j].quantity < 0 || cart[j].quantity > 100) {
+        alert('Veuillez sélectionner une quantité comprise entre 1 et 100')
+        window.location.href = 'cart.html'
+      } else {
+        // On envoie les nouvelles données dans le localStorage
+        localStorage.setItem('products', JSON.stringify(cart))
+        // On met le prix et la quantité à jour
+        totalPriceQuantity()
       }
-      // Fin de la fonction, deleteProducts(products)
+    })
+  }
+}
+// // Fin de la fonction, changeQuantity()
 
-      // .............................................................................
-      // .............................................................................
-     
+// //..............................................................................
+// //..............................................................................
+
+// //....Fonction qui supprime un produit..........................................
+// //..............................................................................
+
+function deleteProducts(product) {
+  // On pointe l'article
+  const deleteItem = document.getElementsByClassName('deleteItem')
+  // On prend en compte le click sur l'article
+  for (let d = 0; d < deleteItem.length; d++) {
+    // On prend en compte le click sur l'article
+    deleteItem[d].addEventListener('click', (event) => {
+      event.preventDefault()
+      // On récupère l'id de article
+      const productInCartId = event.target
+        .closest('article')
+        .getAttribute('data-id')
+      //  On récupère la couleur de l'article
+      const productInCartColor = event.target
+        .closest('article')
+        .getAttribute('data-color')
+
+      // On enregistre l'id et la couleur séléctionnée par le bouton "Supprimer"
+      cart = cart.filter(
+        (element) =>
+          element.id == productInCartId.id &&
+          element.color == productInCartColor.color
+      )
+
+      // On envoie les nouvelles données dans le localStorage
+      localStorage.setItem('products', JSON.stringify(cart))
+
+      // On avertit de la suppression et on recharge la page
+      // alert('Votre article a bien été supprimé.')
+      // On recharge la page
+      window.location.href = 'cart.html'
+
+      // On met le prix et la quantité à jour
+      totalPriceQuantity()
+    })
+  }
+}
+// // Fin de la fonction, deleteProducts(products)
+
+
+// function deleteProducts() {
+//   const deleteButtons = document.querySelectorAll('.deleteItem')
+
+//   deleteButtons.forEach((button) =>
+//     button.addEventListener('click', function () {
+//       const productId = this.closest('article').dataset.id
+//       const productColor = this.closest('article').dataset.color
+
+//       cart.slice(productIndexInCart(productId, productColor), 1)
+//       localStorage.setItem('Cart', JSON.stringify(cart))
+//       document.location.reload()
+//     })
+//   )
+// }
+
+
+
+// // .............................................................................
+// // .............................................................................
+
 //....Fonction de validation du formulaire............................................
 //....................................................................................
 
@@ -314,8 +378,7 @@ function postForm() {
     const communeRegex = /^[a-zA-ZéèêëàâäôöîïùûüçÉÈÊËÀÂÄÔÖÎÏÙÛÜÇ\s-]+$/
     const addressRegex = /^[a-zA-Z0-9\s,.'-]{3,}$/
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/
- 
-    
+
     // On contrôle la validation des entrées de contact
 
     //On contrôle le prénom
@@ -390,7 +453,6 @@ function postForm() {
       }
     }
 
-
     // On crée un tableau avec les id des produits de la commande
     let products = []
     for (let p of cart) {
@@ -429,7 +491,7 @@ function postForm() {
           document.location.href = 'confirmation.html?id=' + data.orderId
         }
       })
-  }) 
+  })
 }
 // fin de la fonction postForm()
 postForm()
