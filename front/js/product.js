@@ -88,17 +88,17 @@ button.addEventListener('click', (event) => {
           localStorage.setItem('products', JSON.stringify(cart))
         }
 
-        if (
-          // On prévient avec une fenêtre de confirmation d'ajout au panier
-          window.confirm(
-            'Le produit a été ajouté au panier. Voulez-vous aller à la page de votre panier ?'
-          )
-        ) {
-          // On redirige la page suivant l'option choisie
-          window.location.href = 'cart.html'
-        } else {
-          window.location.href = 'index.html'
-        }
+        // if (
+        //   // On prévient avec une fenêtre de confirmation d'ajout au panier
+        //   window.confirm(
+        //     'Le produit a été ajouté au panier. Voulez-vous aller à la page de votre panier ?'
+        //   )
+        // ) {
+        //   // On redirige la page suivant l'option choisie
+        //   window.location.href = 'cart.html'
+        // } else {
+        //   reaload
+        // }
         // On alerte sur la quantité des produits
       } else {
         alert(

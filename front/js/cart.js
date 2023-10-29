@@ -9,10 +9,7 @@ let cart = JSON.parse(localStorage.getItem('products'))
 // On affiche les produits du panier
 if (cart === null) {
   let cart = []
-  alert('Votre panier est vide')
-  console.log('localStorage vide')
 } else {
-  //  cart = JSON.parse(cart)
 
   const cartItems = document.getElementById('cart__items')
 
@@ -21,14 +18,12 @@ if (cart === null) {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      // console.log(data)
+      
       let products = showData(data)
-      // console.log(products)
-      // products.forEach((product, i) => {
+      
       totalPriceQuantity(products)
       changeQuantity(products)
       deleteProducts(products)
-      // })
     })
   function showData(data) {
     let tab = []
@@ -50,7 +45,7 @@ if (cart === null) {
 
       let imageSrc
       data.map((p) => {
-        if ((p._id = productInCart.id)) {
+        if ((p._id == productInCart.id)) {
           imageSrc = p.imageUrl
         }
       })
@@ -154,9 +149,6 @@ if (cart === null) {
         altText: imageAlt,
       }
 
-      // console.log(product)
-      // console.log(productInCart)
-
       //..............................................................................
       //..............................................................................
       tab.push(product)
@@ -170,11 +162,11 @@ if (cart === null) {
 //....Fin du else si des produits sont dans le panier.................................
 // ...................................................................................
 
-//..............................................................................
-//..............................................................................
+//....................................................................................
+//....................................................................................
 
-//....Fonction qui calcule la quantité et le prix des produits du panier........
-//..............................................................................
+//....Fonction qui calcule la quantité et le prix des produits du panier..............
+//....................................................................................
 
 async function totalPriceQuantity(products) {
   // On déclare les variables avec des valeurs de nombre
@@ -185,7 +177,6 @@ async function totalPriceQuantity(products) {
     for (let j = 0; j < cart.length; j++) {
       const product = products.find((item_, i) => cart[j].id == item_.id)
       let item = cart[j]
-      // console.log(product)
       // On met en place un opérateur qui calcule la quantité
       totalQuantity += parseInt(item.quantity)
       // On met en place un opérateur qui calcule le prix total
@@ -199,11 +190,11 @@ async function totalPriceQuantity(products) {
 }
 // Fin de la fonction totalPriceQuantity(products)
 
-//..............................................................................
-//..............................................................................
+//....................................................................................
+//....................................................................................
 
-//....Fonction qui modifie la quantité..........................................
-//..............................................................................
+//....Fonction qui modifie la quantité................................................
+//....................................................................................
 
 function changeQuantity(products) {
   // On pointe le produit
@@ -219,7 +210,6 @@ function changeQuantity(products) {
       // On controle si la quantité est supérieure à 0 et inférieure à 100
       if (cart[j].quantity < 0 || cart[j].quantity > 100) {
         alert('Veuillez sélectionner une quantité comprise entre 1 et 100')
-        // window.location.href = 'cart.html'
         window.location.reload()
       } else {
         // On envoie les nouvelles données dans le localStorage
@@ -232,11 +222,11 @@ function changeQuantity(products) {
 }
 // Fin de la fonction, changeQuantity()
 
-//..............................................................................
-//..............................................................................
+//....................................................................................
+//....................................................................................
 
-//....Fonction qui supprime un produit..........................................
-//..............................................................................
+//....Fonction qui supprime un produit................................................
+//....................................................................................
 
 function deleteProducts(product) {
   // On pointe l'article
@@ -256,19 +246,18 @@ function deleteProducts(product) {
         .getAttribute('data-color')
 
       // On enregistre l'id et la couleur séléctionnée par le bouton "Supprimer"
-      cart = cart.filter(
-        (element) =>
-          element.id !== productInCartId || element.color !== productInCartColor
-      )
-      //       console.log(cart)
-      // return
+      cart = cart
+        .filter(
+          (element) =>
+            element.id !== productInCartId ||
+            element.color !== productInCartColor
+        )
+
+      // On supprime l' article
+        event.target.closest('article').remove()
+      
       // On envoie les nouvelles données dans le localStorage
       localStorage.setItem('products', JSON.stringify(cart))
-
-      // On avertit de la suppression et on recharge la page
-      // alert('Votre article a bien été supprimé.')
-      // On actualise la page dynamiquement
-      window.location.reload()
 
       // On met le prix et la quantité à jour
       totalPriceQuantity(product)
@@ -277,8 +266,8 @@ function deleteProducts(product) {
 }
 // Fin de la fonction, deleteProducts(products)
 
-// .............................................................................
-// .............................................................................
+// ...................................................................................
+// ...................................................................................
 
 //....Fonction de validation du formulaire............................................
 //....................................................................................
@@ -286,7 +275,8 @@ function deleteProducts(product) {
 //On envoi le formulaire dans le serveur
 function postForm() {
   const order = document.getElementById('order')
-  order.addEventListener('click', (event) => {
+  document.querySelector('.cart__order__form')
+  .addEventListener('submit', (event) => {
     event.preventDefault()
 
     //On récupère les données du formulaire dans un objet
@@ -310,20 +300,24 @@ function postForm() {
       const okFirstName = contact.firstName
       if (communeRegex.test(okFirstName)) {
         return true
-      } else {
+      }
+      else {
         let firstNameErrorMsg = document.getElementById('firstNameErrorMsg')
         alert((firstNameErrorMsg = 'Prénom. Erreur'))
+        return false
       }
     }
-
+console .log(firstNameErrorMsg)
     // On contrôle le nom
     function controlName() {
       const okName = contact.lastName
       if (communeRegex.test(okName)) {
         return true
-      } else {
+      }
+      else {
         let lastNameErrorMsg = document.getElementById('lastNameErrorMsg')
         alert((lastNameErrorMsg = 'Nom. Erreur'))
+        return false
       }
     }
 
@@ -332,9 +326,11 @@ function postForm() {
       const okAddress = contact.address
       if (addressRegex.test(okAddress)) {
         return true
-      } else {
+      }
+      else {
         let addressErrorMsg = document.getElementById('addressErrorMsg')
-        alert((addressErrorMsg = 'Adresse. Erreur '))
+        alert((addressErrorMsg = 'Adresse. Erreur'))
+        return false
       }
     }
 
@@ -343,21 +339,25 @@ function postForm() {
       const okAddress = contact.city
       if (communeRegex.test(okAddress)) {
         return true
-      } else {
+      }
+      else {
         let cityErrorMsg = document.getElementById('cityErrorMsg')
         alert((cityErrorMsg = 'Ville. Erreur'))
+        return false
       }
     }
-
+console.log(cityErrorMsg)
     // On contrôle l' email
     function controlEmail() {
       const okEmail = contact.email
       if (emailRegex.test(okEmail)) {
         return true
-      } else {
-        let = emailErrorMsg = document.getElementById('emailErrorMsg')
-        alert((emailErrorMsg = 'Email. Erreur'))
       }
+            else {
+              let = emailErrorMsg = document.getElementById('emailErrorMsg')
+              alert((emailErrorMsg = 'Email. Erreur'))
+              return false
+            }
     }
 
     // On contrôle que les entrées de contact soient correctes
@@ -368,15 +368,17 @@ function postForm() {
         controlAddress() &&
         controlCity() &&
         controlEmail()
-      ) {
+      )
+      {
         // On envoie l'objet contact dans le local storage
         localStorage.setItem('contact', JSON.stringify(contact))
         return true
-      } else {
-        alert('Merci de vérifier les données du formulaire')
       }
+      // else {
+      // //   alert('Merci de vérifier les données du formulaire')
+      // }
     }
-
+    
     if (cart) {
       // On crée un tableau avec les id des produits de la commande
       let products = []
@@ -390,21 +392,18 @@ function postForm() {
         contact,
         products,
       }
+
       // clef contenant les contacts et les produits
       console.log(sendFormData)
 
-      if (products.quantity == 0) {
-        alert('Veuillez sélectionner une quantité comprise entre 1 et 100')
-        window.location.href = 'cart.html'
-      }
       // On envoie le formulaire + localStorage (sendFormData),
       // au serveur avec la méthode POST
       const options = {
         method: 'POST',
         body: JSON.stringify(sendFormData),
         headers: {
-          'Content-Type': 'application/json',
-        },
+          'Content-Type': 'application/json'
+        }
       }
 
       fetch('http://localhost:3000/api/products/order', options)
