@@ -102,3 +102,9 @@ button.addEventListener('click', (event) => {
     alert('Veuillez choisir une couleur')
   }
 })
+ 
+
+  
+  
+  
+
