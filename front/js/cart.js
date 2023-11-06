@@ -7,7 +7,7 @@ let cart = JSON.parse(localStorage.getItem('products'))
 if (cart === null) {
   let cart = []
 } else {
-// On défini le conteneur de l'article
+  // On défini le conteneur de l'article
   const cartItems = document.getElementById('cart__items')
 
   // On affiche les produits du Local Storage sur la page Cart
@@ -15,12 +15,10 @@ if (cart === null) {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-     
       let products = showData(data)
       totalPriceQuantity(products)
       changeQuantity(products)
       deleteProducts(products)
-   
     })
   function showData(data) {
     let tab = []
@@ -43,7 +41,7 @@ if (cart === null) {
 
       let imageSrc
       data.map((p) => {
-        if ((p._id === productInCart.id)) {
+        if (p._id === productInCart.id) {
           imageSrc = p.imageUrl
         }
       })
@@ -149,9 +147,8 @@ if (cart === null) {
 
       //..............................................................................
       //..............................................................................
-    //  On pousse le produit dans le tableau
+      //  On pousse le produit dans le tableau
       tab.push(product)
-      
     })
 
     return tab
@@ -210,7 +207,6 @@ function changeQuantity(products) {
       localStorage.setItem('products', JSON.stringify(cart))
       // On actualise le prix et la quantité
       totalPriceQuantity(products)
-
     })
   }
 }
@@ -266,7 +262,7 @@ function deleteProducts(product) {
 
 //On envoi le formulaire dans le serveur
 function postForm() {
-   const order = document.querySelector('.cart__order __ form')
+  const order = document.querySelector('.cart__order __ form')
   document.addEventListener('submit', (event) => {
     // On empêche l’action par défaut liée au clic sur le bouton
     event.preventDefault()
@@ -328,7 +324,6 @@ function postForm() {
       const okAddress = contact.city
       if (communeRegex.test(okAddress)) {
         cityErrorMsg.innerHTML = ''
-
         return true
       } else {
         let cityErrorMsg = document.getElementById('cityErrorMsg')
@@ -356,47 +351,44 @@ function postForm() {
         controlAddress() &&
         controlCity() &&
         controlEmail()
-      ) {
-        // On envoie l'objet contact dans le local storage
-        localStorage.setItem('contact', JSON.stringify(contact))
-        return true
-      }
-   
-    }
+      )
 
-    if (cart) {
-      // On crée un tableau avec les id des produits de la commande
-      let products = []
-      for (let p of cart) {
-        products.push(p.id)
-      }
-
-      // On met les valeurs du formulaire et les
-      // produits sélectionnés dans un objet qui contient contact et products
-      const sendFormData = {
-        contact,
-        products,
-      }
-
-      // On envoie le formulaire + localStorage (sendFormData),
-      // au serveur avec la méthode POST
-      const options = {
-        method: 'POST',
-        body: JSON.stringify(sendFormData),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-
-      fetch('http://localhost:3000/api/products/order', options)
-        .then((response) => response.json())
-
-        .then((data) => {
-          localStorage.setItem('orderId', data.orderId)
-          if (okControl()) {
-            document.location.href = 'confirmation.html?id=' + data.orderId
+            
+      // On crée un tableau avec les id des produits de la 
+      {
+       let products = []
+          for (let p of cart) {
+            products.push(p.id)
           }
-        })
+        
+          // On met les valeurs du formulaire et les
+          // produits sélectionnés dans un objet qui contient contact et products
+          const sendFormData = {
+            contact,
+            products,
+          }
+
+          // On envoie le formulaire + localStorage (sendFormData),
+          // au serveur avec la méthode POST
+          const options = {
+            method: 'POST',
+            body: JSON.stringify(sendFormData),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+
+          fetch('http://localhost:3000/api/products/order', options)
+            .then((response) => response.json())
+
+            .then((data) => {
+              localStorage.setItem('orderId', data.orderId)
+              if (okControl()) {
+                document.location.href = 'confirmation.html?id=' + data.orderId
+              }
+            })
+          
+      }
     }
   })
 }
