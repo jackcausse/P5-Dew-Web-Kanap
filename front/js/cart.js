@@ -351,49 +351,48 @@ function postForm() {
         controlAddress() &&
         controlCity() &&
         controlEmail()
-      )
+      ) {
+        // On crée un tableau avec les id des produits
+        let products = []
+        for (let p of cart) {
+          products.push(p.id)
+        }
+        console.log('dfd')
 
-            
-      // On crée un tableau avec les id des produits de la 
-      {
-       let products = []
-          for (let p of cart) {
-            products.push(p.id)
-          }
-        
-          // On met les valeurs du formulaire et les
-          // produits sélectionnés dans un objet qui contient contact et products
-          const sendFormData = {
-            contact,
-            products,
-          }
+        // On met les valeurs du formulaire et les
+        // produits sélectionnés dans un objet qui contient contact et products
+        const sendFormData = {
+          contact,
+          products,
+        }
 
-          // On envoie le formulaire + localStorage (sendFormData),
-          // au serveur avec la méthode POST
-          const options = {
-            method: 'POST',
-            body: JSON.stringify(sendFormData),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
+        // On envoie le formulaire + localStorage (sendFormData),
+        // au serveur avec la méthode POST
+        const options = {
+          method: 'POST',
+          body: JSON.stringify(sendFormData),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
 
-          fetch('http://localhost:3000/api/products/order', options)
-            .then((response) => response.json())
+        fetch('http://localhost:3000/api/products/order', options)
+          .then((response) => response.json())
 
-            .then((data) => {
-              localStorage.setItem('orderId', data.orderId)
-              if (okControl()) {
-                document.location.href = 'confirmation.html?id=' + data.orderId
-              }
-            })
-          
+          .then((data) => {
+            localStorage.setItem('orderId', data.orderId)
+            if (okControl()) {
+              document.location.href = 'confirmation.html?id=' + data.orderId
+            }
+          })
+      } else {
+        alert('ok')
       }
     }
+    okControl()
   })
 }
 // fin de la fonction postForm()
 postForm()
-
 // ...................................................................................
 // ...................................................................................
