@@ -292,6 +292,7 @@ function postForm() {
       } else {
         let firstNameErrorMsg = document.getElementById('firstNameErrorMsg')
         firstNameErrorMsg.innerHTML = 'Prénom. Erreur'
+        return false
       }
     }
 
@@ -304,6 +305,7 @@ function postForm() {
       } else {
         let lastNameErrorMsg = document.getElementById('lastNameErrorMsg')
         lastNameErrorMsg.innerHTML = 'Nom. Erreur'
+        return false
       }
     }
 
@@ -316,6 +318,7 @@ function postForm() {
       } else {
         let addressErrorMsg = document.getElementById('addressErrorMsg')
         addressErrorMsg.innerHTML = 'Adresse. Erreur '
+        return false
       }
     }
 
@@ -328,6 +331,7 @@ function postForm() {
       } else {
         let cityErrorMsg = document.getElementById('cityErrorMsg')
         cityErrorMsg.innerHTML = 'Ville. Erreur'
+        return false
       }
     }
 
@@ -340,6 +344,7 @@ function postForm() {
       } else {
         let = emailErrorMsg = document.getElementById('emailErrorMsg')
         emailErrorMsg.innerHTML = 'Email. Erreur'
+        return false
       }
     }
 
@@ -393,6 +398,5 @@ function postForm() {
   })
 }
 // fin de la fonction postForm()
-postForm()
-// ...................................................................................
+/// ...................................................................................
 // ...................................................................................
