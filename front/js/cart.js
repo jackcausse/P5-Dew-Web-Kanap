@@ -11,7 +11,7 @@ if (cart === null) {
   const cartItems = document.getElementById('cart__items')
 
   // On affiche les produits du Local Storage sur la page Cart
-  let url = 'http://localhost:3000/api/products/'
+  let url = 'http://localhost:3000/api/products'
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
@@ -383,20 +383,20 @@ function postForm() {
 
         fetch('http://localhost:3000/api/products/order', options)
           .then((response) => response.json())
-
           .then((data) => {
             localStorage.setItem('orderId', data.orderId)
-            if (okControl()) {
               document.location.href = 'confirmation.html?id=' + data.orderId
-            }
+            
           })
-      } else {
-        alert('ok')
-      }
+      } 
+      // else {
+      //   alert('ok')
+      // }
     }
     okControl()
   })
 }
 // fin de la fonction postForm()
+postForm()
 /// ...................................................................................
 // ...................................................................................

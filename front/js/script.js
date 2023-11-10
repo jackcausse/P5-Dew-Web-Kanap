@@ -1,7 +1,7 @@
 //On pointe sur le conteneur de la page web
 const container = document.getElementById('items')
 
-let url = 'http://localhost:3000/api/products/'
+let url = 'http://localhost:3000/api/products'
 
 fetch(url)
   .then((response) => response.json())
