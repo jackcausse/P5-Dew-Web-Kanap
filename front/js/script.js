@@ -16,7 +16,7 @@ function showProducts(products) {
 
     // On crée un élément "a"
     const link = document.createElement('a')
-    link.href = '/front/html/product.html?id=' + product._id
+    link.href = 'product.html?id=' + product._id
 
     // On crée un élément "article" et on l'ajoute à notre "a"
     const article = document.createElement('article')
