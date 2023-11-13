@@ -234,18 +234,17 @@ function deleteProducts(product) {
       const productInCartColor = event.target
         .closest('article')
         .getAttribute('data-color')
-
       // On enregistre l'id et la couleur séléctionnée par le bouton "Supprimer"
       cart = cart.filter(
         (element) =>
           element.id !== productInCartId || element.color !== productInCartColor
       )
 
-      // On supprime le produit
-      event.target.closest('article').remove()
-
       // On envoie les nouvelles données dans le localStorage
       localStorage.setItem('products', JSON.stringify(cart))
+
+      // On supprime le produit
+      event.target.closest('article').remove()
 
       // On actualise le prix et la quantité
       totalPriceQuantity(product)
@@ -362,7 +361,7 @@ function postForm() {
         for (let p of cart) {
           products.push(p.id)
         }
-        console.log('dfd')
+        
 
         // On met les valeurs du formulaire et les
         // produits sélectionnés dans un objet qui contient contact et products
@@ -389,9 +388,6 @@ function postForm() {
             
           })
       } 
-      // else {
-      //   alert('ok')
-      // }
     }
     okControl()
   })
